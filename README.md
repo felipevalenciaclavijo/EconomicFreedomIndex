@@ -1,4 +1,4 @@
-# EconomicFreedomIndex
+# Index of Economic Freedom
 Data Science project to compare countries, regions, and the world on 2022 Index of Economic Freedom
 
 # Dataset Editing
@@ -15,7 +15,7 @@ Here's an example of how the data is presented:
 
 + I'm also planning on collecting all the historic data to see changes thorugh time
 
-+ I'm planning to re-organize the dataset once I gathered all the past years' data, which will also include having to compute World and Regions averages and put them as observations for each year.
++ I'm planning to re-organize the dataset once I gathered all the past years' data, which will also include having to compute World and Regions averages and put them as observations for each year (be careful when computing those!).
 
 ## Required Technologies
 ---
@@ -24,4 +24,4 @@ Here's an example of how the data is presented:
 
 ## Authors
 
-*Felipe Valencia fevacla@byui.edu
+* Felipe Valencia fevacla@byui.edu
