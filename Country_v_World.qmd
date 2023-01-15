@@ -1,6 +1,6 @@
 ---
-title: "Index of Economic Freedom: Comparing Mexico with World Averages"
-subtitle: "Index of Economic Freedom - 2022"
+title: "2022 Index of Economic Freedom"
+subtitle: ""
 author: "Felipe Valencia"
 format:
   html:
@@ -37,6 +37,7 @@ _Data wrangling process goes here_
 # Import libraries
 import pandas as pd
 import altair as alt
+import numpy as np
 import sqlite3
 
 from IPython.display import Markdown
@@ -53,15 +54,42 @@ alt.data_transformers.disable_max_rows()
 
 # Loading in data:
 
-url = "https://raw.githubusercontent.com/byuidatascience/data4dwellings/master/data-raw/dwellings_ml/dwellings_ml.csv"
+url = "https://raw.githubusercontent.com/felipevalenciaclavijo/EconomicFreedomIndex/main/index2022_data.csv"
 
-data = pd.read_csv(url)
+data = pd.read_csv(url, encoding_errors='ignore')
 ```
 
-```{python}
-#| label: Name for each label (has to be different)
-#| code-summary: Summary goes here
 
+```{python}
+#| label: Data wrangling
+#| code-summary: Data wrangling
+
+# Filter to compare between observations: Countries, Regions, and World
+# Input:
+Observation_Name1 = 'Mexico'
+Observation_Name2 = 'World'
+
+# fix a blank space on column 'Country Name' 
+data = data.rename(columns = {'Country Name':'Country_Name'})
+
+comparison_data = data.query('Country_Name == @Observation_Name1 | Country_Name == @Observation_Name2')
+
+# Simplified data frame containing what I need
+comparison_data_scores = comparison_data[['Country_Name', 'Property Rights', 'Judical Effectiveness', 'Government Integrity', 'Tax Burden', "Gov't Spending", 'Fiscal Health', 'Business Freedom', 'Labor Freedom', 'Monetary Freedom', 'Trade Freedom', 'Investment Freedom ', 'Financial Freedom']].reset_index()
+# fix a blank space at the end of 'Investment Freedom ' 
+comparison_data_scores = comparison_data_scores.rename(columns = {'Investment Freedom ':'Investment Freedom'})
+# Transpose dataframe to desired way
+comparison_data_scores = comparison_data_scores.transpose()
+# Rename columns as desired
+comparison_data_scores.columns = np.append(comparison_data_scores.iloc[1, :2], comparison_data_scores.columns[2:])
+comparison_data_scores = comparison_data_scores.reset_index()
+comparison_data_scores = comparison_data_scores.rename(columns = {'index':'Subcategories'})
+# Filter to remove unnecessary rows
+comparison_data_scores = comparison_data_scores.query('Subcategories != "index" & Subcategories != "Country_Name"')
+# Tidy dataframe for data visualization purposes
+comparison_data_scores = comparison_data_scores.melt(id_vars="Subcategories", 
+        var_name="Country", 
+        value_name="Score")
 ```
 
 ## Data Visualization
@@ -72,6 +100,50 @@ _Data Visualizations go here_
 #| label: Name for each label (has to be different)
 #| code-summary: Summary goes here
 
+# Determine colors
+domain = [Observation_Name1, Observation_Name2]
+range_ = ['#ff7f0e', 'steelblue']
+
+# Plot grouped bar chart
+comparison_with_world = (alt.Chart(comparison_data_scores).mark_bar()
+    .encode(
+    alt.X('Country:N', title='', axis=None),
+    y='Score:Q',
+    color=alt.Color('Country:N',title=None,
+        scale=alt.Scale(domain=domain, range=range_)))
+    .properties(
+    width=45,
+    height=200)
+)
+
+text = comparison_with_world.mark_text(
+    align='center',
+    baseline='middle',
+    dy=-7  # Nudges text to right so it doesn't appear on top of the bar
+).encode(
+    text='Score:Q'
+)
+
+grouped_bar_chart= (alt.layer(comparison_with_world, text)
+    .transform_calculate(
+        Subcategories="split(datum.Subcategories, ' ')") # This wraps text
+    .facet(
+        column='Subcategories:N')
+        .properties(
+            title = {
+            "text":  [f"2022 Index of Economic Freedom: {Observation_Name1} vs {Observation_Name2}"],
+            "subtitle": ["The Index of Economic Freedom is a score divided into 12 subcategories used to determine the degree of Economic Freedom of Nations", ""]
+            })
+            .configure_title(
+                fontSize = 18,
+                anchor = "start", 
+                subtitleFontSize = 12)
+            .configure(font='arial')
+)
+grouped_bar_chart
+
+# Save plot as a PNG
+# grouped_bar_chart.save(f'2022_EFI_{Observation_Name1}_vs_{Observation_Name2}.svg')
 ```
 
 ## Conclusions
