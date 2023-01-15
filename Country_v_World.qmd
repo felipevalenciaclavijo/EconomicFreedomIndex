@@ -1,0 +1,83 @@
+---
+title: "Index of Economic Freedom: Comparing Mexico with World Averages"
+subtitle: "Index of Economic Freedom - 2022"
+author: "Felipe Valencia"
+format:
+  html:
+    self-contained: true
+    page-layout: full
+    title-block-banner: true
+    toc: true
+    toc-depth: 3
+    toc-location: body
+    number-sections: false
+    html-math-method: katex
+    code-fold: true
+    code-summary: "Show the code"
+    code-overflow: wrap
+    code-copy: hover
+    code-tools:
+        source: false
+        toggle: true
+        caption: See code
+    
+---
+
+## Background
+
+_Background or Elevator Pitch goes here_
+
+## Data Wrangling
+
+_Data wrangling process goes here_
+
+```{python}
+#| label: libraries
+#| include: false
+# Import libraries
+import pandas as pd
+import altair as alt
+import sqlite3
+
+from IPython.display import Markdown
+from IPython.display import display
+from tabulate import tabulate
+
+# Handle Limit size
+alt.data_transformers.disable_max_rows()
+```
+
+```{python}
+#| label: Read CSV file
+#| code-summary: Read and format data
+
+# Loading in data:
+
+url = "https://raw.githubusercontent.com/byuidatascience/data4dwellings/master/data-raw/dwellings_ml/dwellings_ml.csv"
+
+data = pd.read_csv(url)
+```
+
+```{python}
+#| label: Name for each label (has to be different)
+#| code-summary: Summary goes here
+
+```
+
+## Data Visualization
+
+_Data Visualizations go here_
+
+```{python}
+#| label: Name for each label (has to be different)
+#| code-summary: Summary goes here
+
+```
+
+## Conclusions
+
+_Conclusions go here_
+
+## APPENDIX A (Additional Code)
+
+_Aditional stuff goes here_
