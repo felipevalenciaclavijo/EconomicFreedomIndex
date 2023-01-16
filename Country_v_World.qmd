@@ -107,8 +107,8 @@ range_ = ['#ff7f0e', 'steelblue']
 # Plot grouped bar chart
 comparison_with_world = (alt.Chart(comparison_data_scores).mark_bar()
     .encode(
-    alt.X('Country:N', title='', axis=None),
-    y='Score:Q',
+    x=alt.X('Country:N', title='', axis=None),
+    y=alt.Y('Score:Q', scale=alt.Scale(domain=[0, 100])),
     color=alt.Color('Country:N',title=None,
         scale=alt.Scale(domain=domain, range=range_)))
     .properties(
@@ -143,7 +143,7 @@ grouped_bar_chart= (alt.layer(comparison_with_world, text)
 grouped_bar_chart
 
 # Save plot as a PNG
-# grouped_bar_chart.save(f'2022_EFI_{Observation_Name1}_vs_{Observation_Name2}.svg')
+grouped_bar_chart.save(f'2022_EFI_{Observation_Name1}_vs_{Observation_Name2}.svg')
 ```
 
 ## Conclusions
