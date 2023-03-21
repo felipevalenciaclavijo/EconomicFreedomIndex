@@ -7,7 +7,7 @@ The original 2022 dataset from [Heritage.org](https://www.heritage.org/index/dow
 
 Here's an example of how the data is presented:
 
-[2022 Index of Economic Freedom: Mexico vs World Average](2022_EFI_Mexico_vs_World.svg)
+![2022 Index of Economic Freedom: Mexico vs World Average](2022_EFI_Mexico_vs_World.svg)
 
 # Updates
 
